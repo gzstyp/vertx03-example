@@ -2,11 +2,12 @@ package com.fwtai.example;
 
 import com.fwtai.tool.ToolClient;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 
 /**
- * Vert.x  Hello Router
+ * Vert.x  Hello Router+EventBus
  * @作者 田应平
  * @版本 v1.0
  * @创建时间 2021-02-08 9:36
@@ -18,7 +19,11 @@ public final class VertxRouter extends AbstractVerticle{
 
   @Override
   public void start(){
-    vertx.deployVerticle(new VertxEventBus());//部署调度启动
+    final DeploymentOptions options = new DeploymentOptions();
+    options.setWorker(true);
+    options.setInstances(8);
+    //vertx.deployVerticle(new VertxEventBus());//ok,部署调度启动
+    vertx.deployVerticle("com.fwtai.example.VertxEventBus",options);//部署调度启动
     final Router router = Router.router(vertx);
     router.get("/index").blockingHandler(context -> {
       ToolClient.getResponse(context).end("Vertx Router,欢迎访问");
