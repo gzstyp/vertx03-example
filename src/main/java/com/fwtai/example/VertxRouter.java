@@ -27,7 +27,7 @@ public final class VertxRouter extends AbstractVerticle{
     router.get("/api/v1.0/hello").blockingHandler(this::hello);// http://192.168.3.108:501/api/v1.0/hello?name=typ&age=36
     router.get("/api/v1.0/restful/:name").blockingHandler(this::restful);// http://192.168.3.108:501/api/v1.0/restful/typ
     router.get("/api/v1.0/eventBus").handler(this::eventBus);// http://192.168.3.108:501/api/v1.0/eventBus
-    router.get("/api/v1.0/eventBusName/:name").handler(this::eventBusName);// http://192.168.3.108:501/api/v1.0/eventBusName?name=fwtai
+    router.get("/api/v1.0/eventBusName/:name").handler(this::eventBusName);// http://192.168.3.108:501/api/v1.0/eventBusName/fwtai
     vertx.createHttpServer().requestHandler(router).listen(501);
   }
 
