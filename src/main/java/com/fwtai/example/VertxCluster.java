@@ -8,7 +8,7 @@ import io.vertx.ext.web.RoutingContext;
 /**
  * Vert.x Infinispan Cluster Manager_分布式_集群,单实例启动多个则构成集群模式,如下:
  * 启动命令 java -jar fat.jar -cluster -Djava.net.preferIPv4Stack=true -Dhttp.port=8090
- * 启动命令 java -jar fat601.jar -cluster -Djava.net.preferIPv4Stack=true -Dhttp.port=8070
+ * 启动命令 java -jar fat.jar -cluster -Djava.net.preferIPv4Stack=true -Dhttp.port=8070
  * @作者 田应平
  * @版本 v1.0
  * @创建时间 2021-02-08 9:36

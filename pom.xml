@@ -110,7 +110,7 @@
               </transformers>
               <artifactSet>
               </artifactSet>
-              <outputFile>${project.build.directory}/${project.artifactId}-${project.version}.jar
+              <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar<!--这个-fat不能删除???-->
               </outputFile>
               <filters>
                 <filter>
