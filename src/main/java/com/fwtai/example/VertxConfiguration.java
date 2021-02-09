@@ -44,7 +44,7 @@ public final class VertxConfiguration extends AbstractVerticle{
       .addStore(config);//当然可以根据上面再创建多个可以添加多个
     final ConfigRetriever cfgRetrieve = ConfigRetriever.create(vertx,opts);
 
-    //方式1,参数类型:void getConfig(Handler<AsyncResult<JsonObject>> completionHandler);//都是函数接口类型
+    //方式1,参数类型:void getConfig(Handler<AsyncResult<JsonObject>> completionHandler);//都是函数接口类型,ok
     /*cfgRetrieve.getConfig(asyncResult ->{
       this.configHandle(start,router,asyncResult);
     });*/
