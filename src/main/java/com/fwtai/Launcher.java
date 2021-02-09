@@ -6,7 +6,7 @@ import io.vertx.core.Promise;
 public class Launcher extends AbstractVerticle {
 
   @Override
-  public void start(Promise<Void> startPromise) throws Exception {
+  public void start(final Promise<Void> startPromise) throws Exception {
     vertx.createHttpServer().requestHandler(req -> {
       req.response()
         .putHeader("content-type", "text/html")
