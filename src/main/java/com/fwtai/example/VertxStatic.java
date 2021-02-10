@@ -29,8 +29,8 @@ public final class VertxStatic extends AbstractVerticle{
     vertx.deployVerticle(new ServiceClusterVertx());//ok,部署调度启动
     final Router router = Router.router(vertx);
 
-    //前置请求处理???
-    router.route().handler(context->{
+    //前置请求处理
+    /*router.route().handler(context->{
       final String accessToken = context.request().getHeader("accessToken");
       if(accessToken == null){
         ToolClient.getResponse(context).end("无权限操作!");
@@ -40,9 +40,9 @@ public final class VertxStatic extends AbstractVerticle{
       }else{
         ToolClient.getResponse(context).end("无权限操作!");
       }
-    });
+    });*/
     router.get("/api/v1.0/eventBus").handler(this::eventBus);// http://127.0.0.1:803/api/v1.0/eventBus
-    router.get("/api/v1.0/eventBusName/:name").handler(this::eventBusName);// http://127.0.0.1:803/api/v1.0/eventBusName/fwtai
+    router.get("/api/v1.0/eventBusName/:name").handler(this::eventBusName);// http://192.168.3.108:803/api/v1.0/eventBusName/fwtai
 
     final ConfigStoreOptions config = new ConfigStoreOptions()
       .setType("file")
@@ -52,7 +52,7 @@ public final class VertxStatic extends AbstractVerticle{
       .addStore(config);//当然可以根据上面再创建多个可以添加多个
     final ConfigRetriever cfgRetrieve = ConfigRetriever.create(vertx,opts);
 
-    router.route().handler(StaticHandler.create("web"));//指定root根目录
+    router.route().handler(StaticHandler.create("web"));//指定root根目录,默认访问路径: http://192.168.3.108:803/
 
     //方式1,参数类型:void getConfig(Handler<AsyncResult<JsonObject>> completionHandler);//都是函数接口类型,ok
     /*cfgRetrieve.getConfig(asyncResult ->{
