@@ -21,11 +21,11 @@
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
     <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
-    <!-- 注意这个版本号在某些依赖下或报错,但是3.9.5的版本是不报错 -->
-    <vertx.version>4.0.2</vertx.version>
+    <!-- 注意这个版本号在某些依赖下或报错,但是3.9.5的版本是不报错,教程的版本是3.8.2 -->
+    <vertx.version>3.8.2</vertx.version>
     <junit-jupiter.version>5.7.0</junit-jupiter.version>
 
-    <main.verticle>com.fwtai.Launcher</main.verticle>
+    <main.verticle>com.fwtai.example.UserVerticle</main.verticle>
     <launcher.class>io.vertx.core.Launcher</launcher.class>
   </properties>
 
@@ -59,9 +59,24 @@
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web</artifactId>
     </dependency>
+    <!--对groovy语言的支持-->
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-lang-groovy</artifactId>
+    </dependency>
+    <!--对javascript语言的支持-->
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-lang-js</artifactId>
+    </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-mysql-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <version>6.3.1</version>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>

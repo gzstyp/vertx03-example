@@ -16,10 +16,10 @@ public final class VertxEventBus extends AbstractVerticle{
   @Override
   public void start(){
     vertx.eventBus().consumer("hello.vertx.addr",message->{
-      message.reply("hello vert.x world");
+      message.reply("hello vert.x world");//用于 Hello.js 调用或 com.fwtai.example.VertxRouter 的方法eventBus()调用
     });
     vertx.eventBus().consumer("hello.named.addr",message->{
-      final String name = (String) message.body();
+      final String name = (String) message.body(); //用于 Hello.groovy 调用 或 com.fwtai.example.VertxRouter的方法 eventBusName() 调用
       message.reply(name);
     });
   }
