@@ -14,7 +14,13 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.StaticHandler;
 
 /**
- * Vert.x web,html
+ * Vert.x 异步协调|异步处理
+ * doConfig();
+ *  compose(this::doDatabaseMigrations);
+ *  compose(this::configRouter);
+ *  compose(this::startHttpServer);
+ *  compose(this::deployOtherVerticles);
+ *  setHandle(start::Handle);
  * @作者 田应平
  * @版本 v1.0
  * @创建时间 2021-02-08 9:36
@@ -22,12 +28,16 @@ import io.vertx.ext.web.handler.StaticHandler;
  * @Email service@dwlai.com
  * @官网 http://www.fwtai.com
 */
-public final class VertxStatic extends AbstractVerticle{
+public final class VertxAsyn extends AbstractVerticle{
 
   @Override
   public void start(final Promise<Void> start){
     final Router router = Router.router(vertx);
+    vertx.executeBlocking(promise->{
 
+    },async->{
+
+    });
     //前置请求处理
     /*router.route().handler(context->{
       final String accessToken = context.request().getHeader("accessToken");
@@ -40,7 +50,7 @@ public final class VertxStatic extends AbstractVerticle{
         ToolClient.getResponse(context).end("无权限操作!");
       }
     });*/
-    router.get("/api/v1.0/eventBus").handler(this::eventBus);// http://127.0.0.1:803/api/v1.0/eventBus
+    router.get("/api/v1.0/docker").handler(this::docker);// http://127.0.0.1:803/api/v1.0/docker
 
     final ConfigStoreOptions config = new ConfigStoreOptions()
       .setType("file")
@@ -75,7 +85,7 @@ public final class VertxStatic extends AbstractVerticle{
   }
 
   //方法的参数类型,blockingHandler(Handler<RoutingContext> requestHandler)
-  protected void eventBus(final RoutingContext context){
+  protected void docker(final RoutingContext context){
     ToolClient.getResponse(context).end("EventBus,静态资源访问!");
   }
 }
