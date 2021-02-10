@@ -11,7 +11,14 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.CSRFHandler;
+import io.vertx.ext.web.handler.CorsHandler;
+import io.vertx.ext.web.handler.LoggerHandler;
+import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.ext.web.sstore.ClusteredSessionStore;
+import io.vertx.ext.web.sstore.LocalSessionStore;
+import io.vertx.ext.web.sstore.SessionStore;
 
 /**
  * Vert.x Chained Routes And Static Handlers
@@ -22,12 +29,19 @@ import io.vertx.ext.web.handler.StaticHandler;
  * @Email service@dwlai.com
  * @官网 http://www.fwtai.com
 */
-public final class VertxStatic extends AbstractVerticle{
+public final class VertxSession extends AbstractVerticle{
 
   @Override
   public void start(final Promise<Void> start){
     final Router router = Router.router(vertx);
-
+    final SessionStore session1 = LocalSessionStore.create(vertx);//ok,当然也可以使用下面的方式创建!!!
+    final SessionStore session2 = ClusteredSessionStore.create(vertx);//ok
+    //???
+    router.route().handler(LoggerHandler.create());
+    //Session
+    router.route().handler(SessionHandler.create(session1));// BodyHandler.create(),支持文件上传!!!
+    router.route().handler(CorsHandler.create("127.0.0.1"));
+    router.route().handler(CSRFHandler.create(vertx,"RjF9vTHCS2yr0zX3D50CKRiarMX+0qOpHAfcu24gWZ9bL39s48euPQniE2RhGx"));//自定义参数,高版本有2个参数,低版本只有1个参数
     //前置请求处理
     /*router.route().handler(context->{
       final String accessToken = context.request().getHeader("accessToken");
@@ -40,7 +54,7 @@ public final class VertxStatic extends AbstractVerticle{
         ToolClient.getResponse(context).end("无权限操作!");
       }
     });*/
-    router.get("/api/v1.0/eventBus").handler(this::eventBus);// http://127.0.0.1:803/api/v1.0/eventBus
+    router.get("/api/v1.0/eventBus").handler(this::corsCSRF);// http://127.0.0.1:803/api/v1.0/eventBus
 
     final ConfigStoreOptions config = new ConfigStoreOptions()
       .setType("file")
@@ -75,7 +89,7 @@ public final class VertxStatic extends AbstractVerticle{
   }
 
   //方法的参数类型,blockingHandler(Handler<RoutingContext> requestHandler)
-  protected void eventBus(final RoutingContext context){
-    ToolClient.getResponse(context).end("EventBus,静态资源访问!");
+  protected void corsCSRF(final RoutingContext context){
+    ToolClient.getResponse(context).end("Session|Cors|CSRF示例代码");
   }
 }
