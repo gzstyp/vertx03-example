@@ -11,9 +11,10 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.StaticHandler;
 
 /**
- * Vert.x Configuration
+ * Vert.x Chained Routes And Static Handlers
  * @作者 田应平
  * @版本 v1.0
  * @创建时间 2021-02-08 9:36
@@ -21,18 +22,25 @@ import io.vertx.ext.web.RoutingContext;
  * @Email service@dwlai.com
  * @官网 http://www.fwtai.com
 */
-public final class VertxConfiguration extends AbstractVerticle{
+public final class VertxStatic extends AbstractVerticle{
 
   @Override
   public void start(final Promise<Void> start){
     vertx.deployVerticle(new ServiceClusterVertx());//ok,部署调度启动
     final Router router = Router.router(vertx);
-    router.get("/index").blockingHandler(context -> {
-      ToolClient.getResponse(context).end("Vertx Router,欢迎访问");
+
+    //前置请求处理???
+    router.route().handler(context->{
+      final String accessToken = context.request().getHeader("accessToken");
+      if(accessToken == null){
+        ToolClient.getResponse(context).end("无权限操作!");
+      }
+      if("myToken".contains(accessToken)){
+        context.next();
+      }else{
+        ToolClient.getResponse(context).end("无权限操作!");
+      }
     });
-    router.get("/").blockingHandler(this::index);// http://127.0.0.1:803/ 注意接口参数:blockingHandler(Handler<RoutingContext> requestHandler)
-    router.get("/api/v1.0/hello").blockingHandler(this::hello);// http://127.0.0.1:803/api/v1.0/hello?name=typ&age=36
-    router.get("/api/v1.0/restful/:name").blockingHandler(this::restful);// http://127.0.0.1:803/api/v1.0/restful/typ
     router.get("/api/v1.0/eventBus").handler(this::eventBus);// http://127.0.0.1:803/api/v1.0/eventBus
     router.get("/api/v1.0/eventBusName/:name").handler(this::eventBusName);// http://127.0.0.1:803/api/v1.0/eventBusName/fwtai
 
@@ -43,6 +51,8 @@ public final class VertxConfiguration extends AbstractVerticle{
     final ConfigRetrieverOptions opts = new ConfigRetrieverOptions()
       .addStore(config);//当然可以根据上面再创建多个可以添加多个
     final ConfigRetriever cfgRetrieve = ConfigRetriever.create(vertx,opts);
+
+    router.route().handler(StaticHandler.create("web"));//指定root根目录
 
     //方式1,参数类型:void getConfig(Handler<AsyncResult<JsonObject>> completionHandler);//都是函数接口类型,ok
     /*cfgRetrieve.getConfig(asyncResult ->{
@@ -56,30 +66,14 @@ public final class VertxConfiguration extends AbstractVerticle{
 
   protected void configHandle(final Promise<Void> start,final Router router,final AsyncResult<JsonObject> asyncResult){
     if(asyncResult.succeeded()){
-      final JsonObject jsonObject = asyncResult.result();//请注意json文件格式数据
-      final JsonObject http = jsonObject.getJsonObject("http");
+      final JsonObject jsonObject = asyncResult.result();//请注意json文件格式数据,{"http":{"port":803}}
+      final JsonObject http = jsonObject.getJsonObject("http");// {"port":803}
       final Integer httpPort = http.getInteger("port",801);
       vertx.createHttpServer().requestHandler(router).listen(httpPort);
       start.complete();
     }else{
       start.fail("应用启动失败");
     }
-  }
-
-  //方法的参数类型,blockingHandler(Handler<RoutingContext> requestHandler)
-  protected void index(final RoutingContext context){
-    ToolClient.getResponse(context).end("Vertx Router,欢迎访问");
-  }
-
-  //方法的参数类型,blockingHandler(Handler<RoutingContext> requestHandler)
-  protected void hello(final RoutingContext context){
-    ToolClient.getResponse(context).end("Vertx Router!");
-  }
-
-  //方法的参数类型,blockingHandler(Handler<RoutingContext> requestHandler)
-  protected void restful(final RoutingContext context){
-    final String name = context.pathParam("name");
-    ToolClient.getResponse(context).end("Vertx Router,Welcome "+name);
   }
 
   //方法的参数类型,blockingHandler(Handler<RoutingContext> requestHandler)

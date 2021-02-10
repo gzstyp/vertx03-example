@@ -20,7 +20,7 @@ public final class VertxCluster extends AbstractVerticle{
 
   @Override
   public void start(){
-    vertx.deployVerticle(new HelloVertx());//ok,部署调度启动
+    vertx.deployVerticle(new ServiceClusterVertx());//ok,部署调度启动
     final Router router = Router.router(vertx);
     router.get("/index").blockingHandler(context -> {
       ToolClient.getResponse(context).end("Vertx Router,欢迎访问");

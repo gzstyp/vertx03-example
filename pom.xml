@@ -9,7 +9,7 @@
   <version>v1.0.0</version>
 
   <description>
-    vert.x各模块的学习
+    vert.x各模块的学习,含获取请求头的token,前置请求处理 router.route().handler(context->{});
   </description>
 
   <properties>

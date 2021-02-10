@@ -13,7 +13,7 @@ import java.util.UUID;
  * @Email service@dwlai.com
  * @官网 http://www.fwtai.com
 */
-public final class HelloVertx extends AbstractVerticle{
+public final class ServiceClusterVertx extends AbstractVerticle{
 
   final String verticleId = UUID.randomUUID().toString();
 
