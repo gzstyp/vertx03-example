@@ -57,9 +57,9 @@ public final class VertxAsyn extends AbstractVerticle{
       .compose(this::deployOtherVerticles)
       //步骤7,启动
       .setHandler(start::handle);//最后调用的是本身的start()方法
-    //以下这个也好使的
-    vertx.deployVerticle("Api.groovy");
-    vertx.deployVerticle("Api.js");
+
+    //vertx.deployVerticle("Api.groovy");//ok,todo 请勿删除
+    //vertx.deployVerticle("Api.js");//ok,todo 请勿删除
   }
 
   //方法的参数类型,blockingHandler(Handler<RoutingContext> requestHandler)
@@ -131,9 +131,11 @@ public final class VertxAsyn extends AbstractVerticle{
   //步骤6
   protected Future<Void> deployOtherVerticles(final HttpServer server){
     vertx.deployVerticle(new UserVerticle());
-    final Future<String> groovy = Future.future(promise -> vertx.deployVerticle("Hello.groovy",promise));
-    final Future<String> javascript = Future.future(promise -> vertx.deployVerticle("Hello.js",promise));
-    return CompositeFuture.all(groovy,javascript).mapEmpty();
-    //return Promise.<Void> succeededPromise().future();
+    final Future<String> helloGroovy = Future.future(promise -> vertx.deployVerticle("Hello.groovy",promise));
+    final Future<String> helloJavascript = Future.future(promise -> vertx.deployVerticle("Hello.js",promise));
+
+    final Future<String> apiGroovy = Future.future(promise -> vertx.deployVerticle("Api.groovy",promise));
+    final Future<String> apiJavascript = Future.future(promise -> vertx.deployVerticle("Api.js",promise));
+    return CompositeFuture.all(helloGroovy,helloJavascript,apiGroovy,apiJavascript).mapEmpty();
   }
 }
