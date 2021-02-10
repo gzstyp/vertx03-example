@@ -41,7 +41,7 @@ public final class VertxSession extends AbstractVerticle{
     //Session
     router.route().handler(SessionHandler.create(session1));// BodyHandler.create(),支持文件上传!!!
     router.route().handler(CorsHandler.create("127.0.0.1"));
-    router.route().handler(CSRFHandler.create("RjF9vTHCS2yr0zX3D50CKRiarMX+0qOpHAfcu24gWZ9bL39s48euPQniE2RhGx"));//自定义参数,高版本有2个参数,低版本只有1个参数
+    router.route().handler(CSRFHandler.create("RjF9vTHCS2yr0zX3D50CKRiarMX+0qOpHAfcu24gWZ9bL39s48euPQniE2RhGx"));//自定义参数,高版本有2个参数,低版本只有1个参数,4.0.x版本报错
     //前置请求处理
     /*router.route().handler(context->{
       final String accessToken = context.request().getHeader("accessToken");

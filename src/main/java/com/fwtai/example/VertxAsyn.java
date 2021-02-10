@@ -78,7 +78,7 @@ public final class VertxAsyn extends AbstractVerticle{
   //步骤2,初始化配置,是否有报错???
   protected Future<Void> storeConfig(final JsonObject config){
     loadedConfig.mergeIn(config);
-    return Promise.<Void>succeededPromise().future();
+    return Promise.<Void>succeededPromise().future();//todo 新版本会报错
   }
 
   //步骤3,配置数据库
@@ -99,10 +99,10 @@ public final class VertxAsyn extends AbstractVerticle{
 
     try {
       //flyway.migrate();
-      return Promise.<Void> succeededPromise().future();
+      return Promise.<Void> succeededPromise().future();//todo 新版本会报错
     } catch (final FlywayException fe) {
       fe.printStackTrace();
-      return Promise.<Void> failedPromise(fe).future();
+      return Promise.<Void> failedPromise(fe).future();//todo 新版本会报错
     }
   }
 
@@ -114,10 +114,10 @@ public final class VertxAsyn extends AbstractVerticle{
     //Session
     router.route().handler(SessionHandler.create(session1));// BodyHandler.create(),支持文件上传!!!
     router.route().handler(CorsHandler.create("127.0.0.1"));
-    router.route().handler(CSRFHandler.create("RjF9vTHCS2yr0zX3D50CKRiarMX+0qOpHAfcu24gWZ9bL39s48euPQniE2RhGx"));//自定义参数,高版本有2个参数,低版本只有1个参数
+    router.route().handler(CSRFHandler.create("RjF9vTHCS2yr0zX3D50CKRiarMX+0qOpHAfcu24gWZ9bL39s48euPQniE2RhGx"));//自定义参数,高版本有2个参数,低版本只有1个参数,4.0.x版本报错
     router.get("/api/v1.0/login").handler(this::login);// http://127.0.0.1:803/api/v1.0/login
     router.route().handler(StaticHandler.create("web"));//指定root根目录,默认访问路径: http://192.168.3.108:803/
-    return Promise.succeededPromise(router).future();
+    return Promise.succeededPromise(router).future();//todo 新版本会报错
   }
 
   //步骤5,有参数,怎么传递?是否报错???
