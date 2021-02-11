@@ -98,7 +98,6 @@ public final class VertxAsyn extends AbstractVerticle{
     return promise.future();*/
 
     try {
-      //flyway.migrate();
       return Promise.<Void> succeededPromise().future();//todo 新版本会报错
     } catch (final FlywayException fe) {
       fe.printStackTrace();
