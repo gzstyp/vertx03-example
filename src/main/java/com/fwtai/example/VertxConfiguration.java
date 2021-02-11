@@ -84,7 +84,7 @@ public final class VertxConfiguration extends AbstractVerticle{
 
   //方法的参数类型,blockingHandler(Handler<RoutingContext> requestHandler)
   protected void eventBus(final RoutingContext context){
-    vertx.eventBus().request("hello.vertx.addr","",reply->{
+    vertx.eventBus().request("hello.vertx.addr","",reply->{//reply是回复|回答
       ToolClient.getResponse(context).end("EventBus,"+reply.result().body());
     });
   }
@@ -92,7 +92,7 @@ public final class VertxConfiguration extends AbstractVerticle{
   //方法的参数类型,blockingHandler(Handler<RoutingContext> requestHandler)
   protected void eventBusName(final RoutingContext context){
     final String name = context.pathParam("name");
-    vertx.eventBus().request("hello.named.addr",name,reply->{
+    vertx.eventBus().request("hello.named.addr",name,reply->{//reply是回复|回答
       ToolClient.getResponse(context).end("EventBus,"+reply.result().body());
     });
   }

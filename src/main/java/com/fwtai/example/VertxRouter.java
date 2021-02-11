@@ -50,14 +50,14 @@ public final class VertxRouter extends AbstractVerticle{
   }
 
   protected void eventBus(final RoutingContext context){
-    vertx.eventBus().request("hello.vertx.addr","",reply->{
+    vertx.eventBus().request("hello.vertx.addr","",reply->{ //reply是回复|回答
       ToolClient.getResponse(context).end("EventBus,"+reply.result().body());
     });
   }
 
   protected void eventBusName(final RoutingContext context){
     final String name = context.pathParam("name");
-    vertx.eventBus().request("hello.named.addr",name,reply->{
+    vertx.eventBus().request("hello.named.addr",name,reply->{//reply是回复|回答
       ToolClient.getResponse(context).end("EventBus,"+reply.result().body());
     });
   }
